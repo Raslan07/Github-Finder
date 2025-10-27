@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Chart.js for the language chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <title>Github User Finder</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <h1><i class="fab fa-github"></i> GitHub Finder</h1>
+          <p>Search for any GitHub user profile</p>
+        </div>
+        <button id="theme-toggle" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun"></i>
+        </button>
+      </header>
+
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="search"
+            placeholder="Enter a GitHub username..."
+            autocomplete="off"
+          />
+        </div>
+        <button id="search-btn">
+          <span class="btn-text">Search</span>
+          <div class="spinner-sm hidden"></div>
+        </button>
+      </div>
+
+      <div class="search-history-wrapper">
+        <div class="search-history-container" id="search-history">
+          <!-- Search history items will be injected here -->
+        </div>
+        <button id="clear-history-btn" class="hidden">Clear</button>
+      </div>
+
+      <!-- Welcome Message -->
+      <div id="welcome-container" class="message-container">
+        <i class="fas fa-search-location"></i>
+        <h2>Welcome to GitHub Finder</h2>
+        <p>Enter a username above to start searching.</p>
+      </div>
+
+      <!-- Error Message -->
+      <div id="error-container" class="message-container hidden">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2 id="error-title">Error</h2>
+        <p id="error-message">Something went wrong.</p>
+      </div>
+
+      <!-- Profile Card -->
+      <div id="profile-container" class="hidden">
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <img src="" alt="Profile avatar" id="avatar" />
+          <div class="profile-info">
+            <div class="profile-info-header">
+              <h2 id="name"></h2>
+              <span id="hireable-badge" class.="hidden">
+                <i class="fas fa-check-circle"></i> Hireable
+              </span>
+            </div>
+            <p id="username"></p>
+            <p id="bio"></p>
+            <div class="location-date">
+              <p>
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="location"></span>
+              </p>
+              <p>
+                <i class="far fa-calendar-alt"></i>
+                Joined
+                <span id="joined-date"></span>
+              </p>
+            </div>
+            <a id="profile-link" target="_blank" class="btn">
+              <i class="fas fa-external-link-alt"></i> View Profile
+            </a>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+          <div class="stat">
+            <span id="followers" class="stat-value"></span>
+            <span class="stat-label">
+              <i class="fas fa-users"></i> Followers
+            </span>
+          </div>
+          <div class="stat">
+            <span id="following" class="stat-value"></span>
+            <span class="stat-label">
+              <i class="fas fa-user-friends"></i> Following
+            </span>
+          </div>
+          <div class="stat">
+            <span id="repos" class="stat-value"></span>
+            <span class="stat-label">
+              <i class="fas fa-book-bookmark"></i> Repositories
+            </span>
+          </div>
+          <div class="stat">
+            <span id="gists" class="stat-value"></span>
+            <span class="stat-label">
+              <i class="fas fa-file-code"></i> Public Gists
+            </span>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="additional-info">
+          <div class="info-item" id="company-container">
+            <i class="fas fa-building"></i>
+            <span id="company"></span>
+          </div>
+          <div class="info-item" id="blog-container">
+            <i class="fas fa-link"></i>
+            <a id="blog" target="_blank"></a>
+          </div>
+          <div class="info-item" id="twitter-container">
+            <i class="fab fa-twitter"></i>
+            <a id="twitter" target="_blank"></a>
+          </div>
+          <div class="info-item" id="email-container">
+            <i class="fas fa-envelope"></i>
+            <a id="email" href="#"></a>
+          </div>
+        </div>
+
+        <!-- Repos & Charts Section -->
+        <div class="data-section">
+          <div class="data-layout">
+            <!-- Repositories -->
+            <div class="repos-section">
+              <div class="repos-section-header">
+                <h3>Top Repositories</h3>
+                <select id="sort-select">
+                  <option value="stargazers_count">Sort by: Stars</option>
+                  <option value="forks_count">Sort by: Forks</option>
+                  <option value="updated">Sort by: Updated</option>
+                </select>
+              </div>
+              <div id="repos-container" class="repos-container">
+                <!-- Repositories will be inserted here dynamically -->
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-section">
+              <h3>Language Distribution</h3>
+              <div class="chart-container">
+                <canvas id="language-chart"></canvas>
+                <div id="no-chart-data" class="no-chart-data hidden">
+                  <p>No language data to display for top repos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
